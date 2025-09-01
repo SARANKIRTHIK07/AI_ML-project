@@ -56,3 +56,6 @@ The trained model, tokenizer, and label encoder are saved into classifier_model/
 ⚠ Note on Large Files:
 Due to GitHub’s file size limitations, the trained model folder (classifier_model/) is not uploaded.
 Please run train.py to generate the model locally before using the API.
+Local Deployment with Docker
+To make the API portable and easy to run locally, the project supports deployment inside a Docker container. A Dockerfile and requirements.txt are included to build a lightweight image with all dependencies (PyTorch, Transformers, Flask, etc.). After building the image using docker build -t query-classifier ., you can start the container with docker run -p 5000:5000 query-classifier. This exposes the Flask API at http://localhost:5000, where you can access the web interface or send POST requests to /classify for predictions. Docker ensures the environment is consistent across different systems without needing manual installation of Python packages.
+
