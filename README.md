@@ -1,7 +1,8 @@
 Model Choices
-The project uses BERT (bert-base-uncased) from HuggingFace’s Transformers library for sequence classification tasks.
 
-The model has been adapted for multi-class classification to predict one of five predefined categories:
+This project uses BERT (bert-base-uncased) from HuggingFace’s transformers library for sequence classification tasks.
+
+Adapted for multi-class classification to predict one of five categories:
 
 Billing Issue
 
@@ -11,74 +12,47 @@ Compliment
 
 Product Question
 
-Complaint.
+Complaint
 
-LabelEncoder from scikit-learn is used to transform text labels into integer ids for model training.
+LabelEncoder from scikit-learn is used to map text labels → integer IDs for training.
 
 Fine-Tuning Method
-The script loads and preprocesses the training data, encoding text labels and splitting data into train, validation, and test sets with stratification to maintain class balance.
 
-Data is tokenized using the BertTokenizer with padding and truncation to a max length of 128 tokens.
+Training data is preprocessed and split into train/validation/test sets with stratified sampling for class balance.
 
-BertForSequenceClassification is fine-tuned for 5 epochs, using:
+Tokenization is done with BertTokenizer, using padding and truncation (max_length=128).
+
+BertForSequenceClassification is fine-tuned for 5 epochs with:
 
 Batch size: 8
 
-Learning rate: 
-2
-×
-10
-−
-5
-2×10 
-−5
- 
+Learning rate: 2e-5
 
-Validation during training to select the best model based on weighted F1-score.
+Training uses HuggingFace Trainer, with metrics: accuracy, F1, precision, recall.
 
-Trainer from HuggingFace is used for model training, validation, and metric calculation (accuracy, f1, precision, recall).
+The best model is selected based on weighted F1-score.
 
 Evaluation Strategy
-The final model is evaluated on a reserved test set, measuring:
 
-Overall metrics: accuracy, weighted F1, precision, recall, average confidence, and total number of test cases.
+The final model is evaluated on a reserved test set, reporting:
 
-Category-wise accuracy: accuracy per class.
+Overall Metrics: accuracy, weighted F1, precision, recall, average confidence.
 
-Confusion Matrix: visualizing correct and incorrect predictions.
+Category-wise Accuracy: per-class accuracy.
 
-Confidence Distributions: per-category violin/kde plots of prediction confidence.
+Confusion Matrix: for correct vs incorrect predictions.
 
-Bar charts compare accuracies and overall metrics visually.
+Confidence Distributions: violin/KDE plots per category.
 
-All metrics and plots are saved to the Output directory for further analysis.
+Bar Charts: comparing accuracies and metrics.
+
+All metrics and plots are saved in the Output/ directory.
 
 Deployment Instructions
-Model Export:
+1. Model Export
 
-Trained model, tokenizer, and label encoder are saved in classifier_model using HuggingFace and joblib.
+The trained model, tokenizer, and label encoder are saved into classifier_model/ using HuggingFace + Joblib.
 
-API Deployment:
-
-Flask serves the model as an HTTP API (see api.py).
-
-The API loads model, tokenizer, and categories from the saved directory and exposes /classify for POST requests with input text.
-
-The response includes predicted category and model confidence.
-
-Run the server:
-
-bash
-python api.py
-Access the web-based front-end at the default route (/). You can test classification via web UI or programmatically send requests to /classify.
-
-Required Files and Environment:
-
-Ensure trained model, tokenizer, and label encoder (classifier_model directory) exist.
-
-Install dependencies:
-
-text
-pip install torch transformers scikit-learn flask pandas matplotlib seaborn joblib
-This documentation ensures clarity about model selection, the fine-tuning pipeline, evaluation methodology, and the steps to deploy and run the classifier API, aligned with the project files and scripts.
-
+⚠ Note on Large Files:
+Due to GitHub’s file size limitations, the trained model folder (classifier_model/) is not uploaded.
+Please run train.py to generate the model locally before using the API.
