@@ -5,7 +5,7 @@ import os
 
 app = Flask(__name__, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 
-model_save_path = r"C:\Users\user\Desktop\AI project\data\pythonProject\models\classifier_model"
+model_save_path = r"sarankirthik\LLM-text-classifier\classifier_model"
 
 tokenizer = BertTokenizer.from_pretrained(model_save_path)
 model = BertForSequenceClassification.from_pretrained(model_save_path, num_labels=5)
@@ -36,3 +36,4 @@ def classify():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
